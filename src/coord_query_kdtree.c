@@ -7,7 +7,7 @@
 #include <assert.h>
 
 #include "record.h"
-#include "id_query.h"
+#include "coord_query.h"
 
 struct kd_node {
     const struct record *record;
@@ -55,7 +55,7 @@ static struct kd_node* build_kdtree(const struct record **points, int len, int d
     return node;
 }
 
-static void mk_kdtree(const struct record *rs, int n) {
+static void *mk_kdtree(const struct record *rs, int n) {
     if (n <= 0 || rs == NULL) {
         return NULL;
     }
@@ -96,8 +96,8 @@ static void search_kdtree(const struct kd_node *node, double qlon, double qlat, 
     }
 }
 
-static const struct record *lookup_kdtree(void *index, double lon, double lat) {
-    struct kd_node *root = (struct kd_node *) index;
+static const struct record *lookup_kdtree(void *tree, double lon, double lat) {
+    struct kd_node *root = (struct kd_node *) tree;
     if (root == NULL) {
         return NULL;
     }
